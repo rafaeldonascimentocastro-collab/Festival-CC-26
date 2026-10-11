@@ -78,21 +78,21 @@ Abra o arquivo em um editor de texto e use **Ctrl+F** para procurar o texto da c
 
 | Quero mudar… | Procure por | Linha aprox. |
 |---|---|---|
-| **Links das transmissões (os 4 links)** | `var LINKS` | 273–278 |
-| Auditório que abre selecionado | `destaquePadrao` | 282 |
-| Canal do YouTube (usado só se um link ficar vazio) | `canalId` | 283 |
-| Nome dos auditórios na tela | `var SALAS` | 288–291 |
-| Dias do festival (rótulo e data) e **shows** | `var DIAS` | 294–300 |
-| **Programação** (início, fim, título, participantes) | `var PROG` | 307–359 |
+| **Links das transmissões (os 4 links)** | `var LINKS` | 274–279 |
+| Auditório que abre selecionado | `destaquePadrao` | 283 |
+| Canal do YouTube (usado só se um link ficar vazio) | `canalId` | 284 |
+| Nome dos auditórios na tela | `var SALAS` | 289–292 |
+| Dias do festival (rótulo e data) e **shows** | `var DIAS` | 295–301 |
+| **Programação** (início, fim, título, participantes) | `var PROG` | 308–360 |
 | Cores e temas (dourado / bordô) | `--papaki` e `html[data-sala=` | 24 e 33–34 |
 | Título da aba do navegador | `<title>` | 7 |
-| Texto “A programação pode sofrer alterações” (caixa) | `class="aviso-prog"` | 249 |
-| Rodapé (endereço, portões, ingressos, aviso) | `<footer>` | 258–263 |
-| Link de ingressos | `sympla.com.br` (aparece 2 vezes: linhas ~240 e ~260) | 240, 260 |
-| Link do mapa | `maps.app` | 259 |
-| Sala Oliver / portfólios | `Sala Oliver` | 550 |
-| Texto “Escolha o auditório” | `Escolha o auditório` | 214 |
-| **Links de reserva (aparecem quando o aparelho não executa JavaScript)** | `<noscript>` | 225 |
+| Texto “A programação pode sofrer alterações” (caixa) | `class="aviso-prog"` | 250 |
+| Rodapé (endereço, portões, ingressos, aviso) | `<footer>` | 259–264 |
+| Link de ingressos | `sympla.com.br` (aparece 2 vezes: linhas ~241 e ~261) | 241, 261 |
+| Link do mapa | `maps.app` | 260 |
+| Sala Oliver / portfólios | `Sala Oliver` | 551 |
+| Texto “Escolha o auditório” | `Escolha o auditório` | 215 |
+| **Links de reserva (aparecem quando o aparelho não executa JavaScript)** | `<noscript>` | 226 |
 
 ### 7.1 Trocar um link de transmissão
 
@@ -126,7 +126,7 @@ Procure por **`var PROG`**. Cada sessão é uma linha: `[início, fim, título, 
 
 - Mude o texto entre aspas. **Horários sempre no formato `"HH:MM"`** (ex.: `"9:30"` ou `"09:30"`).
 - `tipo`: `""` normal · `"i"` almoço/intervalo · `"m"` mentoria · `"p"` premiação · `"c"` em construção.
-- O bloco de cada dia/auditório começa em: sábado Papaki (linha ~309), sábado Clube de Criação (~323), domingo Papaki (~336), domingo Clube de Criação (~348).
+- O bloco de cada dia/auditório começa em: sábado Papaki (linha ~310), sábado Clube de Criação (~324), domingo Papaki (~337), domingo Clube de Criação (~349).
 - Para **incluir** uma sessão: copie uma linha inteira, cole na ordem cronológica e ajuste. Todas as linhas terminam com vírgula, **menos a última** de cada bloco.
 - Para **remover**: apague a linha inteira.
 - Se uma sessão não tiver fim definido, deixe `""` no segundo campo (a página assume 60 min; premiação 90 min).

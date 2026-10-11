@@ -82,13 +82,13 @@ button:focus-visible,a:focus-visible,summary:focus-visible{outline:2px solid var
 .agora{order:2;margin:2px 0 16px;font-size:15px;line-height:1.5;min-height:1.5em}
 .palco{order:3;position:relative;aspect-ratio:16/9;background:#000;border-radius:12px;overflow:hidden}
 .palco iframe,.vazio,.erro{position:absolute;inset:0;width:100%;height:100%;border:0}
-.vazio,.erro{display:grid;place-items:center;text-align:center;padding:24px}
+.vazio,.erro{display:grid;place-items:center;place-items:safe center;text-align:center;padding:clamp(10px,3vw,24px);overflow-y:auto}
 .vazio{background:var(--bg2);color:#fff}
 .vazio strong{display:block;font-size:clamp(22px,4vw,40px);font-stretch:112%;letter-spacing:.08em;text-transform:uppercase}
 .vazio a{display:inline-block;margin-top:14px;padding:11px 20px;border:1px solid #fff;border-radius:999px;font-size:14px;font-weight:600;text-decoration:none;color:#fff}
 .erro{background:#111;color:#fff;z-index:2}
-.erro strong{display:block;font-size:clamp(18px,3vw,28px);margin-bottom:8px}
-.erro p{max-width:560px;margin:0 auto 16px;font-size:14px;line-height:1.55;opacity:.92}
+.erro strong{display:block;font-size:clamp(16px,3vw,28px);margin-bottom:6px}
+.erro p{max-width:560px;margin:0 auto clamp(8px,2vw,16px);font-size:clamp(12px,3.3vw,14px);line-height:1.4;opacity:.92}
 .erro .btn-yt{background:#fff;color:var(--ink)}
 .acoes{order:4;display:flex;flex-wrap:wrap;align-items:center;gap:10px 20px;margin-top:14px}
 .acoes>a:not(.btn-yt){display:inline-flex;align-items:center;min-height:44px;font-size:14px;font-weight:600}
@@ -162,6 +162,7 @@ footer p+p{margin-top:6px}
 /* ===== RESPONSIVO ===== */
 @media (min-width:861px){
   .chip .l,.btn-yt .hide-lg{display:inline}
+  .palco{width:min(100%,calc((100vh - 150px)*16/9));min-width:min(100%,640px);margin-left:auto;margin-right:auto}
 }
 @media (max-width:860px){
   .topo__grid{grid-template-columns:1fr 1fr}
@@ -176,7 +177,7 @@ footer p+p{margin-top:6px}
   .col__acoes{width:100%}.col__acoes>*{flex:1 1 140px}
   .dias .wrap{justify-content:center}
 }
-@media (max-width:560px){
+@media (max-width:560px){ .palco:has(>.erro:not([hidden])){aspect-ratio:auto;min-height:180px} .palco>.erro:not([hidden]){position:relative;inset:auto;height:auto;min-height:180px}
   .topo__sel{padding-top:8px;padding-bottom:12px}
   .topo__sel .eyebrow{margin-bottom:6px;font-size:11px}
   .salas__lista{gap:8px}
