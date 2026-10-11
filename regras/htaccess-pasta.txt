@@ -1,0 +1,10 @@
+# ============================================================
+# Salve como ".htaccess" DENTRO da pasta
+# wp-content/uploads/festival-transmissao-2026/
+# (garante acentos corretos e cache curto, para as atualizações aparecerem rápido)
+# ============================================================
+AddDefaultCharset UTF-8
+DirectoryIndex index.html
+<IfModule mod_headers.c>
+  Header set Cache-Control "public, max-age=60, must-revalidate"
+</IfModule>

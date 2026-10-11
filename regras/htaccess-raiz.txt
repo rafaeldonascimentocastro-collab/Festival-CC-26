@@ -1,0 +1,16 @@
+# ============================================================
+# COLE ESTE BLOCO NO .htaccess DA RAIZ DO SITE (public_html/.htaccess)
+# ACIMA da linha "# BEGIN WordPress". Faça backup do arquivo antes.
+# Serve a página em: https://clubedecriacao.com.br/festival/transmissao2026/
+# (a URL no navegador não muda; o arquivo fica em wp-content/uploads)
+# ============================================================
+<IfModule mod_rewrite.c>
+RewriteEngine On
+
+# 1) URL oficial (aceita com ou sem "/" no final e qualquer caixa: Transmissao2026)
+RewriteRule ^festival/transmissao2026/?$ /wp-content/uploads/festival-transmissao-2026/index.html [L,NC]
+
+# 2) (opcional) quem digitar com acento, "Transmissão2026", é levado à URL oficial
+RewriteCond %{REQUEST_URI} !transmissao2026 [NC]
+RewriteRule ^festival/transmiss.{1,2}o2026/?$ /festival/transmissao2026/ [R=301,L,NC]
+</IfModule>

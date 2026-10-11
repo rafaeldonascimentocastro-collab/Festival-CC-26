@@ -1,0 +1,9 @@
+# ============================================================
+# SOMENTE se o servidor for NGINX (peça confirmação à hospedagem / Evolut).
+# Dentro do bloco "server { ... }", ANTES do "location / { ... }" do WordPress:
+# ============================================================
+location ~* ^/festival/transmissao2026/?$ {
+    rewrite ^ /wp-content/uploads/festival-transmissao-2026/index.html break;
+    add_header Cache-Control "public, max-age=60, must-revalidate";
+}
+# Depois, recarregue o nginx:  nginx -t && systemctl reload nginx

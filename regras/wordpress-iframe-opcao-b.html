@@ -1,0 +1,18 @@
+<!-- ============================================================
+ OPÇÃO B (sem mexer no servidor): cole este código em um bloco "HTML personalizado"
+ da página WordPress "Transmissão 2026" (página filha de "Festival", slug: transmissao2026).
+ Antes, envie o index.html para: wp-content/uploads/festival-transmissao-2026/index.html
+ ============================================================ -->
+<iframe id="cc-transmissao"
+        src="/wp-content/uploads/festival-transmissao-2026/index.html"
+        title="Transmissão ao vivo – Festival do Clube de Criação 2026"
+        style="width:100%;min-height:900px;border:0;display:block"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share; fullscreen"
+        allowfullscreen loading="lazy"></iframe>
+<script>
+/* ajusta a altura do quadro ao conteúdo da página de transmissão */
+window.addEventListener("message", function (e) {
+  if (e.origin !== location.origin || !e.data || !e.data.ccFestivalAltura) return;
+  document.getElementById("cc-transmissao").style.height = e.data.ccFestivalAltura + "px";
+});
+</script>

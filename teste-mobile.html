@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="robots" content="noindex">
+<title>Teste Mobile · Transmissão CC2026</title>
+<style>
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:#0d0d0d;color:#f2efe9;font:16px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;padding:16px 16px 40px}
+.w{max-width:640px;margin:0 auto}
+h1{font-size:22px;line-height:1.2;margin:8px 0 4px}
+h2{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:#aa914a;margin:28px 0 10px}
+p{margin:0 0 10px;color:#cfcac0}
+.row{display:flex;gap:10px;align-items:flex-start;justify-content:space-between;padding:12px 0;border-bottom:1px solid #2a2a2a}
+.row b{display:block;font-weight:600}
+.row small{display:block;color:#a9a39a;word-break:break-all;overflow-wrap:anywhere}
+.row>div{min-width:0}
+.tag{flex:none;font-size:12px;font-weight:700;padding:4px 9px;border-radius:99px;background:#333;color:#fff;white-space:nowrap}
+.ok{background:#1f7a3d}.av{background:#b07a00}.er{background:#b3261e}
+.btn{display:flex;align-items:center;justify-content:center;width:100%;min-height:48px;padding:12px 16px;margin:8px 0;border:0;border-radius:99px;background:#fff;color:#000;font:600 16px/1.2 inherit;font-family:inherit;text-decoration:none;cursor:pointer}
+.btn.g{background:#aa914a;color:#000}.btn.b{background:#744944;color:#fff}.btn.o{background:transparent;color:#f2efe9;border:1px solid #555}
+.box{background:#171717;border:1px solid #2a2a2a;border-radius:12px;padding:14px;margin:10px 0}
+.pl{position:relative;width:100%;aspect-ratio:16/9;background:#000;border-radius:8px;overflow:hidden;margin:10px 0 0}
+.pl iframe,.pl div.msg{position:absolute;inset:0;width:100%;height:100%;border:0}
+.msg{display:flex;align-items:center;justify-content:center;text-align:center;padding:12px;color:#ddd;font-size:14px}
+pre{white-space:pre-wrap;word-break:break-word;background:#171717;border:1px solid #2a2a2a;border-radius:8px;padding:12px;font-size:12px;color:#cfcac0}
+a{color:#e5cf8a}
+.js-no{background:#3a1512;border:1px solid #b3261e;border-radius:12px;padding:14px}
+</style>
+</head>
+<body>
+<div class="w">
+<h1>Teste mobile · Transmissão CC2026</h1>
+<p>Página de diagnóstico. Abra no celular e veja o que funciona neste aparelho. Nada aqui altera a página oficial.</p>
+
+<noscript>
+<div class="js-no"><b>JavaScript desligado.</b> Este visualizador não executa JavaScript, por isso a página oficial também ficaria em branco. Abra o arquivo no Chrome ou no Safari. Para assistir agora:
+<a class="btn g" href="https://www.youtube.com/live/6eUy33JLQGA" target="_blank" rel="noopener">17/10 · Auditório Papaki</a>
+<a class="btn b" href="https://www.youtube.com/live/40fZ5IqIrfo" target="_blank" rel="noopener">17/10 · Auditório Clube de Criação</a>
+<a class="btn g" href="https://www.youtube.com/live/uNp9h-T3ruU" target="_blank" rel="noopener">18/10 · Auditório Papaki</a>
+<a class="btn b" href="https://www.youtube.com/live/lF7RIQ-_fkw" target="_blank" rel="noopener">18/10 · Auditório Clube de Criação</a></div>
+</noscript>
+
+<h2>1 · Este aparelho</h2>
+<div id="amb"><p>Executando…</p></div>
+
+<h2>2 · Vídeo embutido (um por vez)</h2>
+<p>Toque em um botão para carregar o player do YouTube e ver se ele aceita ser exibido aqui.</p>
+<div id="lives"></div>
+
+<h2>3 · Resultado para enviar</h2>
+<button class="btn o" id="copiar" type="button">Copiar relatório</button>
+<pre id="rel">Aguardando testes…</pre>
+
+<h2>Como ler</h2>
+<div class="box">
+<p><b>Protocolo file:</b> o arquivo foi aberto direto no aparelho. O YouTube não mostra o vídeo (erro 153). Isso é esperado.</p>
+<p><b>Protocolo https:</b> a página está publicada. O vídeo deve aparecer; se não aparecer, o erro mostra o motivo (por exemplo, incorporação desativada na live).</p>
+<p style="margin:0"><b>Nenhum item aparece:</b> o visualizador não executa JavaScript. Abra no Chrome ou Safari.</p>
+</div>
+</div>
+
+<script>
+(function(){
+  var LIVES=[
+    {k:"17 · Auditório Papaki",id:"6eUy33JLQGA",c:"g"},
+    {k:"17 · Auditório Clube de Criação",id:"40fZ5IqIrfo",c:"b"},
+    {k:"18 · Auditório Papaki",id:"uNp9h-T3ruU",c:"g"},
+    {k:"18 · Auditório Clube de Criação",id:"lF7RIQ-_fkw",c:"b"}
+  ];
+  var rel=[];var ytState="nao";var ytQueue=[];
+  function $(i){return document.getElementById(i);}
+  function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+  function safe(f,d){try{return f();}catch(e){return d;}}
+
+  /* ---------- 1. ambiente ---------- */
+  var loc=window.location;
+  var proto=(loc.protocol||"").replace(":","");
+  var isFile=proto==="file"||proto==="";
+  var linhas=[];
+  function add(nome,valor,estado,txt){linhas.push({n:nome,v:valor,e:estado,t:txt});rel.push(nome+": "+valor+" ["+txt+"]");}
+  add("JavaScript","executando","ok","OK");
+  add("Endereço",isFile?"arquivo local ("+proto+")":loc.origin,isFile?"av":"ok",isFile?"SEM HTTPS":"HTTPS");
+  if(!isFile&&proto!=="https"){linhas[1].e="av";linhas[1].t="HTTP";}
+  var emIframe=safe(function(){return window.top!==window.self;},true);
+  add("Aberta dentro de outra página",emIframe?"sim (prévia ou iframe)":"não",emIframe?"av":"ok",emIframe?"PRÉVIA":"OK");
+  add("Referrer da página",document.referrer||"(vazio)","","info");
+  var fuso=safe(function(){return Intl.DateTimeFormat().resolvedOptions().timeZone;},"?");
+  add("Fuso do aparelho",fuso,fuso==="America/Sao_Paulo"?"ok":"av",fuso==="America/Sao_Paulo"?"OK":"DIFERENTE");
+  var hsp=safe(function(){return new Intl.DateTimeFormat("pt-BR",{timeZone:"America/Sao_Paulo",dateStyle:"short",timeStyle:"medium"}).format(new Date());},"indisponível");
+  add("Hora em São Paulo",hsp,hsp==="indisponível"?"er":"ok",hsp==="indisponível"?"ERRO":"OK");
+  add("Tela",window.innerWidth+" × "+window.innerHeight+" px (x"+(window.devicePixelRatio||1)+")","","info");
+  var touch=("ontouchstart" in window)||(navigator.maxTouchPoints>0);
+  add("Toque",touch?"sim":"não",touch?"ok":"av",touch?"OK":"SEM TOQUE");
+  var ls=safe(function(){localStorage.setItem("_t","1");localStorage.removeItem("_t");return true;},false);
+  add("Armazenamento local",ls?"disponível":"bloqueado",ls?"ok":"av",ls?"OK":"BLOQUEADO");
+  add("Conexão",navigator.onLine===false?"sem internet":"online",navigator.onLine===false?"er":"ok",navigator.onLine===false?"OFFLINE":"OK");
+  add("Navegador",navigator.userAgent,"","info");
+
+  var h="";
+  for(var i=0;i<linhas.length;i++){
+    var L=linhas[i];
+    h+='<div class="row"><div><b>'+esc(L.n)+'</b><small>'+esc(L.v)+'</small></div>'+
+       '<span class="tag '+(L.e||"")+'">'+esc(L.t)+'</span></div>';
+  }
+  $("amb").innerHTML=h;
+
+  /* ---------- 2. vídeos ---------- */
+  var ERROS={
+    "2":"Código do vídeo inválido (erro 2).",
+    "5":"O player HTML5 falhou neste aparelho (erro 5).",
+    "100":"Vídeo não encontrado ou privado (erro 100).",
+    "101":"A live não permite incorporação (erro 101). Ative “Permitir incorporação” no YouTube Studio.",
+    "150":"A live não permite incorporação (erro 150). Ative “Permitir incorporação” no YouTube Studio.",
+    "153":"O YouTube não recebeu o endereço da página (erro 153). Acontece com arquivo local ou prévia. Publique em https."
+  };
+  var lh="";
+  for(var j=0;j<LIVES.length;j++){
+    lh+='<div class="box"><b>'+esc(LIVES[j].k)+'</b>'+
+        '<div class="pl" id="pl'+j+'"><div class="msg">Toque em “Testar embed”.</div></div>'+
+        '<button class="btn '+LIVES[j].c+'" type="button" data-t="'+j+'">Testar embed</button>'+
+        '<a class="btn o" target="_blank" rel="noopener" href="https://www.youtube.com/live/'+LIVES[j].id+'">Abrir no YouTube</a>'+
+        '<small id="st'+j+'" style="color:#a9a39a"></small></div>';
+  }
+  $("lives").innerHTML=lh;
+
+  function setSt(j,txt,ok){
+    var el=$("st"+j);el.textContent=txt;el.style.color=ok?"#6fd18f":"#ff8a80";
+    rel.push("Embed "+LIVES[j].k+": "+txt);atualizaRel();
+  }
+  function msg(j,txt){
+    var b=$("pl"+j);b.innerHTML="";var d=document.createElement("div");
+    d.className="msg";d.textContent=txt;b.appendChild(d);
+  }
+  function carregaYT(cb){
+    if(ytState==="ok"){cb(true);return;}
+    ytQueue.push(cb);
+    if(ytState==="carregando")return;
+    ytState="carregando";
+    var s=document.createElement("script");
+    s.src="https://www.youtube.com/iframe_api";
+    var fim=false;
+    function termina(ok){if(fim)return;fim=true;ytState=ok?"ok":"falhou";
+      var q=ytQueue;ytQueue=[];for(var i=0;i<q.length;i++)q[i](ok);}
+    window.onYouTubeIframeAPIReady=function(){termina(true);};
+    s.onerror=function(){termina(false);};
+    setTimeout(function(){termina(false);},8000);
+    document.head.appendChild(s);
+  }
+  function testa(j){
+    var box=$("pl"+j);
+    msg(j,"Carregando…");setSt(j,"carregando…",true);
+    carregaYT(function(ok){
+      if(!ok){msg(j,"Não foi possível falar com o YouTube. Verifique a conexão ou se a rede bloqueia youtube.com.");
+        setSt(j,"YouTube não carregou (rede, bloqueio ou prévia)",false);return;}
+      box.innerHTML="";var alvo=document.createElement("div");alvo.id="yt"+j;box.appendChild(alvo);
+      var opts={videoId:LIVES[j].id,width:"100%",height:"100%",
+        playerVars:{rel:0,playsinline:1,modestbranding:1},
+        events:{
+          onReady:function(){setSt(j,"player carregou (toque em play para confirmar)",true);},
+          onError:function(e){
+            var c=String(e&&e.data);var t=ERROS[c]||("Erro "+c);
+            msg(j,t);setSt(j,t,false);
+          }
+        }};
+      if(!isFile&&proto.indexOf("http")===0){opts.playerVars.origin=loc.origin;}
+      try{new window.YT.Player("yt"+j,opts);}catch(err){msg(j,"Falha ao criar o player.");setSt(j,"falha ao criar o player: "+err,false);}
+    });
+  }
+  $("lives").addEventListener("click",function(ev){
+    var t=ev.target;
+    while(t&&t!==this&&!(t.getAttribute&&t.getAttribute("data-t")!==null))t=t.parentNode;
+    if(t&&t!==this&&t.getAttribute){testa(parseInt(t.getAttribute("data-t"),10));}
+  });
+
+  /* ---------- 3. relatório ---------- */
+  function atualizaRel(){$("rel").textContent=rel.join("\n");}
+  atualizaRel();
+  $("copiar").addEventListener("click",function(){
+    var txt=rel.join("\n");var b=this;
+    function ok(){b.textContent="Copiado";setTimeout(function(){b.textContent="Copiar relatório";},1800);}
+    function sel(){var r=document.createRange();r.selectNodeContents($("rel"));var s=window.getSelection();s.removeAllRanges();s.addRange(r);b.textContent="Selecionado: copie manualmente";}
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(ok,sel);}else{sel();}
+  });
+})();
+</script>
+</body>
+</html>
